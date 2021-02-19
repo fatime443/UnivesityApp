@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="UniLibraryDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Authors">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Author Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Books">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Book Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Publish Date" Type="date" Nullable="false" />
+    <Property Name="Count" Type="int" Nullable="false" />
+    <Property Name="AuthorId" Type="int" />
+  </EntityType>
+  <EntityType Name="Faculties">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Faculty Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Reader_to_Book">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ReaderId" Type="int" />
+    <Property Name="BookId" Type="int" />
+    <Property Name="Get Book" Type="date" Nullable="false" />
+    <Property Name="Deadline" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Readers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Fullname" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Phone" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="FacultyId" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'UniLibraryDb.dbo.ReaderToBookView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="ReaderToBookView">
+    <Key>
+      <PropertyRef Name="Fullname" />
+      <PropertyRef Name="Faculty Name" />
+      <PropertyRef Name="Phone" />
+      <PropertyRef Name="Get Book" />
+      <PropertyRef Name="Deadline" />
+      <PropertyRef Name="Book Name" />
+      <PropertyRef Name="Author Name" />
+    </Key>
+    <Property Name="Fullname" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Faculty Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Phone" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Get Book" Type="date" Nullable="false" />
+    <Property Name="Deadline" Type="date" Nullable="false" />
+    <Property Name="Book Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Author Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__Books__AuthorId__398D8EEE">
+    <End Role="Authors" Type="Self.Authors" Multiplicity="0..1" />
+    <End Role="Books" Type="Self.Books" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Authors">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Books">
+        <PropertyRef Name="AuthorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Reader_to__BookI__4316F928">
+    <End Role="Books" Type="Self.Books" Multiplicity="0..1" />
+    <End Role="Reader_to_Book" Type="Self.Reader_to_Book" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Books">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Reader_to_Book">
+        <PropertyRef Name="BookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Reader_to__Reade__4222D4EF">
+    <End Role="Readers" Type="Self.Readers" Multiplicity="0..1" />
+    <End Role="Reader_to_Book" Type="Self.Reader_to_Book" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Readers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Reader_to_Book">
+        <PropertyRef Name="ReaderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Readers__Faculty__3F466844">
+    <End Role="Faculties" Type="Self.Faculties" Multiplicity="0..1" />
+    <End Role="Readers" Type="Self.Readers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Faculties">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Readers">
+        <PropertyRef Name="FacultyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="UniLibraryDbModelStoreContainer">
+    <EntitySet Name="Authors" EntityType="Self.Authors" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Faculties" EntityType="Self.Faculties" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Reader_to_Book" EntityType="Self.Reader_to_Book" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Readers" EntityType="Self.Readers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ReaderToBookView" EntityType="Self.ReaderToBookView" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [ReaderToBookView].[Fullname] AS [Fullname], 
+    [ReaderToBookView].[Faculty Name] AS [Faculty Name], 
+    [ReaderToBookView].[Phone] AS [Phone], 
+    [ReaderToBookView].[Get Book] AS [Get Book], 
+    [ReaderToBookView].[Deadline] AS [Deadline], 
+    [ReaderToBookView].[Book Name] AS [Book Name], 
+    [ReaderToBookView].[Author Name] AS [Author Name]
+    FROM [dbo].[ReaderToBookView] AS [ReaderToBookView]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK__Books__AuthorId__398D8EEE" Association="Self.FK__Books__AuthorId__398D8EEE">
+      <End Role="Authors" EntitySet="Authors" />
+      <End Role="Books" EntitySet="Books" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Reader_to__BookI__4316F928" Association="Self.FK__Reader_to__BookI__4316F928">
+      <End Role="Books" EntitySet="Books" />
+      <End Role="Reader_to_Book" EntitySet="Reader_to_Book" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Reader_to__Reade__4222D4EF" Association="Self.FK__Reader_to__Reade__4222D4EF">
+      <End Role="Readers" EntitySet="Readers" />
+      <End Role="Reader_to_Book" EntitySet="Reader_to_Book" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Readers__Faculty__3F466844" Association="Self.FK__Readers__Faculty__3F466844">
+      <End Role="Faculties" EntitySet="Faculties" />
+      <End Role="Readers" EntitySet="Readers" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
