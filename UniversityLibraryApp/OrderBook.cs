@@ -126,5 +126,17 @@ namespace UniversityLibraryApp
                 FillField();
             }       
          }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            selectedName.Reader.Fullname = txtFullname.Text;
+            selectedName.Get_Book = dtGetBook.Value;
+            selectedName.Deadline = dtDeadline.Value;
+            selectedName.BookId = _context.Books.First(a => a.Book_Name == cmbBookName.Text).Id;
+            _context.SaveChanges();
+            FillField();
+            buttonVisible("edit");
+           
+        }
     }
 }
